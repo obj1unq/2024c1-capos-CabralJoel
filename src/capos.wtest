@@ -1,0 +1,47 @@
+import capos.*
+import artefactos.*
+
+test "rolando encuentra la espada, el libro y el collar(agarra los primeros 2)
+pero el collar no lo agarra"{
+	rolando.agarrar(espadaDelDestino)
+	rolando.agarrar(libroDeHechizos)
+	assert.equals(2,rolando.artefactos().size())
+	rolando.agarrar(collarDivino)
+	assert.equals(2,rolando.artefactos().size())
+}
+test "rolando agarra la espada y el libro, los lleva al castillo,
+agarra el collar y lo lleva al castillo"{
+	rolando.agarrar(espadaDelDestino)
+	rolando.agarrar(libroDeHechizos)
+	assert.equals(2,rolando.artefactos().size())
+	rolando.irAlHogar()
+	assert.equals(0,rolando.artefactos().size())
+	assert.equals(2,castilloDePiedra.baul().size())
+	rolando.agarrar(collarDivino)
+	rolando.irAlHogar()
+	assert.equals(3,castilloDePiedra.baul().size())
+	assert.that(castilloDePiedra.baul().contains(espadaDelDestino))
+	assert.that(castilloDePiedra.baul().contains(libroDeHechizos))
+	assert.that(castilloDePiedra.baul().contains(collarDivino))
+}
+test "rolando busca el collar y la espada, las guarda en el castillo y agarra la
+armadura, posee los 3 artefactos y el libro no"{
+	rolando.agarrar(espadaDelDestino)
+	rolando.agarrar(collarDivino)
+	rolando.irAlHogar()
+	rolando.agarrar(armaduraDeAcero)
+	assert.that(rolando.posee(espadaDelDestino))
+	assert.that(rolando.posee(collarDivino))
+	assert.that(rolando.posee(armaduraDeAcero))
+	assert.notThat(rolando.posee(libroDeHechizos))
+}
+test "rolando agarra la espada y el libro pero no el collar, los 
+guarda en el castillo y agarra la armadura y el collar"{
+	rolando.agarrar(espadaDelDestino)
+	rolando.agarrar(libroDeHechizos)
+	rolando.agarrar(collarDivino)
+	rolando.irAlHogar()
+	rolando.agarrar(armaduraDeAcero)
+	rolando.agarrar(collarDivino)
+	assert.equals(espadaDelDestino,rolando.historialDeArtefactos().[0])
+}
